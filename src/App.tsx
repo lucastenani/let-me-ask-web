@@ -7,7 +7,7 @@ export function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<CreateRoom />} index />
-        <Route element={<Room />} path="/room/:id" />
+        <Route element={<Room />} path="/room" />
       </Routes>
     </BrowserRouter>
   )
