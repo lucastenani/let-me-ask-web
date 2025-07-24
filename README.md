@@ -4,3 +4,4 @@
 - tailwind
 - shadcn/ui
 - react-router-dom
+- react query
