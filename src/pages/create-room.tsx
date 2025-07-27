@@ -17,7 +17,7 @@ export function CreateRoom() {
     <div className="flex h-screen flex-col items-center justify-center ">
       {isLoading && <p>Loading...</p>}
 
-      {data && (
+      {data ? (
         <ul>
           {data.map(({ id, name }) => (
             <li key={id}>
@@ -25,6 +25,8 @@ export function CreateRoom() {
             </li>
           ))}
         </ul>
+      ) : (
+        <p>No rooms</p>
       )}
     </div>
   )
