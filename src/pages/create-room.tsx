@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { dayjs } from '@/lib/dayjs'
 
 type GetRoomsAPIResponse = Array<{
   id: string
@@ -47,10 +48,8 @@ export function CreateRoom() {
             <h3 className="truncate font-medium">{room.name}</h3>
 
             <div className="flex items-center gap-2 ">
-              <Badge variant={'secondary'}>{room.createdAt}</Badge>
-              <Badge variant={'secondary'}>
-                {room.questionsCount} question(s)
-              </Badge>
+              <Badge>{dayjs(room.createdAt).toNow()}</Badge>
+              <Badge>{room.questionsCount} question(s)</Badge>
             </div>
           </div>
 
