@@ -9,7 +9,7 @@ export function Room() {
   }
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center ">
+    <div className="flex flex-col items-center justify-center ">
       <h1 className="font-bold text-2xl ">Room Details</h1>
       <h2 className="mt-4 text-lg">{roomId}</h2>
 

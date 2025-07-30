@@ -7,5 +7,12 @@
     "formatter": {
       "semicolons": "asNeeded"
     }
+  },
+  "linter": {
+    "rules": {
+      "performance": {
+        "noImgElement": "error"
+      }
+    }
   }
 }
