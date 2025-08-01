@@ -6,6 +6,7 @@ import { QuestionForm } from '@/components/question-form'
 import { QuestionItem } from '@/components/question-item'
 import { Button } from '@/components/ui/button'
 import { useRoomDetails } from '@/http/use-room-details'
+import { useRoomQuestions } from '@/http/use-room-questions'
 
 type RoomParams = {
   roomId: string
@@ -15,7 +16,8 @@ export function Room() {
   const { roomId } = useParams<RoomParams>()
   const navigate = useNavigate()
 
-  const { data, error } = useRoomDetails(roomId ?? '')
+  const { data: roomDetails, error } = useRoomDetails(roomId ?? '')
+  const { data: questions } = useRoomQuestions(roomId ?? '')
 
   useEffect(() => {
     if (error) {
@@ -51,11 +53,11 @@ export function Room() {
           </Link>
         </div>
         <h1 className="mb-2 font-bold text-3xl text-foreground">
-          {data?.name ? data.name : 'Question Room'}
+          {roomDetails?.name ? roomDetails.name : 'Question Room'}
         </h1>
         <p className="text-muted-foreground">
-          {data?.description
-            ? data.description
+          {roomDetails?.description
+            ? roomDetails.description
             : 'Ask questions and receive AI answers'}
         </p>
       </div>
@@ -71,13 +73,11 @@ export function Room() {
           </h2>
         </div>
 
-        <QuestionItem
-          question={{
-            id: '1',
-            question: 'Question 1',
-            createdAt: new Date().toISOString(),
-          }}
-        />
+        {questions &&
+          questions.length > 0 &&
+          questions.map((question) => (
+            <QuestionItem key={question.id} question={question} />
+          ))}
       </div>
     </div>
   )

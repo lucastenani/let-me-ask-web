@@ -2,7 +2,7 @@ import { Bot, Loader2, MessageSquare } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { dayjs } from '@/lib/dayjs'
 
-interface Question {
+export interface Question {
   id: string
   question: string
   answer?: string | null

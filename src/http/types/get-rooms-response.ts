@@ -1,6 +1,6 @@
 export type GetRoomsAPIResponse = Array<{
   id: string
-  name: string
+  question: string
+  answer: string
   createdAt: string
-  questionsCount: number
 }>
