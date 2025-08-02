@@ -3,12 +3,11 @@ import { useEffect } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { QuestionForm } from '@/components/question-form'
-import { QuestionItem } from '@/components/question-item'
+import { QuestionList } from '@/components/question-list'
 import { Button } from '@/components/ui/button'
 import { useRoomDetails } from '@/http/use-room-details'
-import { useRoomQuestions } from '@/http/use-room-questions'
 
-type RoomParams = {
+export type RoomParams = {
   roomId: string
 }
 
@@ -17,7 +16,6 @@ export function Room() {
   const navigate = useNavigate()
 
   const { data: roomDetails, error } = useRoomDetails(roomId ?? '')
-  const { data: questions } = useRoomQuestions(roomId ?? '')
 
   useEffect(() => {
     if (error) {
@@ -66,19 +64,7 @@ export function Room() {
         <QuestionForm roomId={roomId} />
       </div>
 
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-2xl text-foreground">
-            Questions & Answers
-          </h2>
-        </div>
-
-        {questions &&
-          questions.length > 0 &&
-          questions.map((question) => (
-            <QuestionItem key={question.id} question={question} />
-          ))}
-      </div>
+      <QuestionList />
     </div>
   )
 }
