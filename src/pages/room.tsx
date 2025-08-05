@@ -5,7 +5,9 @@ import { toast } from 'sonner'
 import { QuestionForm } from '@/components/question-form'
 import { QuestionList } from '@/components/question-list'
 import { Button } from '@/components/ui/button'
+import { Drawer, DrawerTrigger } from '@/components/ui/drawer'
 import { useRoomDetails } from '@/http/use-room-details'
+import { RecordRoomAudioDrawer } from '../components/record-room-audio-drawer'
 
 export type RoomParams = {
   roomId: string
@@ -43,12 +45,16 @@ export function Room() {
               Back to Home
             </Button>
           </Link>
-          <Link to={`/room/${roomId}/audio`}>
-            <Button className="flex items-center gap-2" variant="secondary">
-              <Radio className="size-4" />
-              Record Audio
-            </Button>
-          </Link>
+          <Drawer direction="right">
+            <DrawerTrigger asChild>
+              <Button className="flex items-center gap-2" variant="secondary">
+                <Radio className="size-4" />
+                Record Audio
+              </Button>
+            </DrawerTrigger>
+
+            <RecordRoomAudioDrawer />
+          </Drawer>
         </div>
         <h1 className="mb-2 font-bold text-3xl text-foreground">
           {roomDetails?.name ? roomDetails.name : 'Question Room'}
