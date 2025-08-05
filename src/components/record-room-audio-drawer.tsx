@@ -1,5 +1,7 @@
+/** biome-ignore-all lint/nursery/noNestedComponentDefinitions: dev */
 import { Mic, StopCircleIcon } from 'lucide-react'
 import { useRef, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import {
@@ -17,6 +19,8 @@ const isRecordingSupported: boolean =
   typeof window.MediaRecorder === 'function'
 
 export function RecordRoomAudioDrawer() {
+  const { roomId } = useParams<{ roomId: string }>()
+
   const [isRecording, setIsRecording] = useState<boolean>(false)
   const recorder = useRef<MediaRecorder | null>(null)
 
@@ -26,6 +30,23 @@ export function RecordRoomAudioDrawer() {
     if (recorder.current && recorder.current.state !== 'inactive') {
       recorder.current.stop()
     }
+  }
+
+  async function UploadAudioFile(audioStream: Blob) {
+    const formData = new FormData()
+
+    formData.append('audio', audioStream, 'audio.webm')
+
+    const response = await fetch(
+      `http://localhost:3333/rooms/${roomId}/audio`,
+      {
+        method: 'POST',
+        body: formData,
+      }
+    )
+
+    const result = await response.json()
+    console.log(result)
   }
 
   async function handleStartRecording() {
@@ -52,7 +73,7 @@ export function RecordRoomAudioDrawer() {
       recorder.current.ondataavailable = (event) => {
         if (event.data.size > 0) {
           toast.success('Audio recorded successfully!')
-          console.log('Audio data:', event.data)
+          UploadAudioFile(event.data)
         }
       }
 
