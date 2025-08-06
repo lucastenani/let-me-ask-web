@@ -45,8 +45,7 @@ export function RecordRoomAudioDrawer() {
       }
     )
 
-    const result = await response.json()
-    console.log(result)
+    await response.json()
   }
 
   async function handleStartRecording() {
@@ -77,13 +76,9 @@ export function RecordRoomAudioDrawer() {
         }
       }
 
-      recorder.current.onstart = () => {
-        console.log('Recording started')
-      }
+      // recorder.current.onstart = () => {}
 
-      recorder.current.onstop = () => {
-        console.log('Recording stopped')
-      }
+      // recorder.current.onstop = () => {}
 
       recorder.current.start()
     } catch {
@@ -95,11 +90,13 @@ export function RecordRoomAudioDrawer() {
   return (
     <DrawerContent className="flex h-screen min-w-full flex-col items-center justify-center gap-4 p-5 md:min-w-md">
       <DrawerHeader>
-        <DrawerTitle>Ask with your voice</DrawerTitle>
+        <DrawerTitle>Train LetMeAsk with your voice</DrawerTitle>
         <DrawerDescription>
-          Don’t feel like typing? Tap the button below and start speaking — your
-          voice will be converted into text and sent straight to LetMeAsk.
-          Perfect for live streams or quick thoughts you want the AI to catch.
+          Instead of typing your context, just speak it.
+          <br />
+          LetMeAsk will listen and use your voice to understand the tone,
+          subject, and intent — preparing the AI to give better answers during
+          Q&A.
         </DrawerDescription>
       </DrawerHeader>
       <Button

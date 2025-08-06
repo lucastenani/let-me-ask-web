@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -46,15 +47,17 @@ export function QuestionForm({ roomId }: QuestionFormProps) {
     },
   })
 
-  function handleCreateQuestion(data: CreateQuestionFormData) {
+  async function handleCreateQuestion(data: CreateQuestionFormData) {
     try {
-      createQuestion(data)
+      await createQuestion(data)
       reset()
       toast.success('Question submitted successfully!')
     } catch {
       toast.error('Error submitting question.')
     }
   }
+
+  const { isSubmitting } = form.formState
 
   return (
     <Card>
@@ -79,6 +82,7 @@ export function QuestionForm({ roomId }: QuestionFormProps) {
                   <FormControl>
                     <Textarea
                       className="min-h-[100px]"
+                      disabled={isSubmitting}
                       placeholder="What would you like to know?"
                       {...field}
                     />
@@ -88,7 +92,12 @@ export function QuestionForm({ roomId }: QuestionFormProps) {
               )}
             />
 
-            <Button type="submit">Submit Question</Button>
+            <Button disabled={isSubmitting} type="submit">
+              Submit Question
+              {isSubmitting && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
+            </Button>
           </form>
         </Form>
       </CardContent>
