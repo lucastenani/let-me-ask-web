@@ -1,5 +1,12 @@
 # Let me Ask Web
 
+\*Let me Ask\*\* is a full-stack Q&A application powered by Google's Gemini AI.  
+The frontend provides an intuitive interface where users can create Q&A rooms, submit questions, and interact in real-time.
+
+The backend processes these questions, trains Gemini to generate **embeddings**, and compares them with **voice-based embeddings** extracted from live speech. This allows the AI to provide accurate, context-aware answers to questions asked by users.
+
+The concept is designed for live streaming platforms (such as Twitch), where the streamer speaks, and viewers can submit questions in chat. The AI—continuously trained with the ongoing stream—automatically responds to these questions in real time.
+
 This is the frontend application for the full-stack project [Let me Ask API](https://github.com/lucastenani/let-me-ask-api). It provides the user interface and consumes the backend API.
 
 ## 🔗 Backend repository: [Let me Ask API](https://github.com/lucastenani/let-me-ask-api)
