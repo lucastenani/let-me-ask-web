@@ -1,4 +1,5 @@
 /** biome-ignore-all lint/nursery/noNestedComponentDefinitions: dev */
+
 import { Mic, StopCircleIcon } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -23,12 +24,17 @@ export function RecordRoomAudioDrawer() {
 
   const [isRecording, setIsRecording] = useState<boolean>(false)
   const recorder = useRef<MediaRecorder | null>(null)
+  const intervalRef = useRef<NodeJS.Timeout>(null)
 
   function handleStopRecording() {
     setIsRecording(false)
 
     if (recorder.current && recorder.current.state !== 'inactive') {
       recorder.current.stop()
+    }
+
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current)
     }
   }
 
@@ -48,6 +54,22 @@ export function RecordRoomAudioDrawer() {
     await response.json()
   }
 
+  function createRecorder(audioStream: MediaStream) {
+    recorder.current = new MediaRecorder(audioStream, {
+      mimeType: 'audio/webm',
+      audioBitsPerSecond: 64_000,
+    })
+
+    recorder.current.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        toast.success('Audio recorded successfully!')
+        UploadAudioFile(event.data)
+      }
+    }
+
+    recorder.current.start()
+  }
+
   async function handleStartRecording() {
     if (!isRecordingSupported) {
       return toast.error('Recording is not supported in this browser.')
@@ -64,23 +86,13 @@ export function RecordRoomAudioDrawer() {
         },
       })
 
-      recorder.current = new MediaRecorder(audioStream, {
-        mimeType: 'audio/webm',
-        audioBitsPerSecond: 64_000,
-      })
+      createRecorder(audioStream)
 
-      recorder.current.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          toast.success('Audio recorded successfully!')
-          UploadAudioFile(event.data)
-        }
-      }
+      intervalRef.current = setInterval(() => {
+        recorder.current?.stop()
 
-      // recorder.current.onstart = () => {}
-
-      // recorder.current.onstop = () => {}
-
-      recorder.current.start()
+        createRecorder(audioStream)
+      }, 5000)
     } catch {
       toast.error('Failed to start recording. Please try again.')
       setIsRecording(false)
@@ -121,7 +133,7 @@ export function RecordRoomAudioDrawer() {
         <DrawerClose asChild>
           <Button variant="destructive">Cancel</Button>
         </DrawerClose>
-        <Button>Send</Button>
+        {/* <Button>Send</Button> */}
       </DrawerFooter>
     </DrawerContent>
   )
